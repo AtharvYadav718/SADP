@@ -1,0 +1,77 @@
+//write a java program to implement iterator pattern for designing menu like breakfast, lunch or dinnermenu give me the simple java program also shorten it
+
+import java.util.Iterator;
+import java.util.ArrayList;
+
+interface Menu {
+    Iterator<String> createIterator();
+}
+
+class BreakfastMenu implements Menu {
+    private ArrayList<String> menuItems;
+
+    BreakfastMenu() {
+        menuItems = new ArrayList<>();
+        addItem("Pancakes");
+        addItem("Waffles");
+    }
+
+    void addItem(String item) {
+        menuItems.add(item);
+    }
+
+    public Iterator<String> createIterator() {
+        return menuItems.iterator();
+    }
+}
+
+class LunchMenu implements Menu {
+    private String[] menuItems;
+    private int position = 0;
+
+    LunchMenu() {
+        menuItems = new String[2];
+        addItem("Burger");
+        addItem("Salad");
+    }
+
+    void addItem(String item) {
+        if (position >= menuItems.length) return;
+        menuItems[position++] = item;
+    }
+
+    public Iterator<String> createIterator() {
+        return new ArrayIterator(menuItems);
+    }
+}
+
+class ArrayIterator implements Iterator<String> {
+    private String[] items;
+    private int position = 0;
+
+    ArrayIterator(String[] items) { this.items = items; }
+
+    public boolean hasNext() {
+        return position < items.length && items[position] != null;
+    }
+
+    public String next() {
+        return items[position++];
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Menu breakfastMenu = new BreakfastMenu();
+        Menu lunchMenu = new LunchMenu();
+
+        printMenu(breakfastMenu.createIterator());
+        printMenu(lunchMenu.createIterator());
+    }
+
+    private static void printMenu(Iterator<String> iterator) {
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+}

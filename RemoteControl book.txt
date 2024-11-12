@@ -1,0 +1,50 @@
+//write a java program to implement command pattern to test Remote Control Book. Give me the simple java code also it must be short 
+
+interface Command {
+    void execute();
+}
+
+class Book {
+    void open() { System.out.println("Book is opened."); }
+    void close() { System.out.println("Book is closed."); }
+}
+
+class OpenBookCommand implements Command {
+    private Book book;
+
+    OpenBookCommand(Book book) { this.book = book; }
+
+    public void execute() { book.open(); }
+}
+
+class CloseBookCommand implements Command {
+    private Book book;
+
+    CloseBookCommand(Book book) { this.book = book; }
+
+    public void execute() { book.close(); }
+}
+
+class RemoteControl {
+    private Command command;
+
+    void setCommand(Command command) { this.command = command; }
+
+    void pressButton() { command.execute(); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Book book = new Book();
+        Command openCommand = new OpenBookCommand(book);
+        Command closeCommand = new CloseBookCommand(book);
+
+        RemoteControl remote = new RemoteControl();
+
+        remote.setCommand(openCommand);
+        remote.pressButton();  // Opens the book
+
+        remote.setCommand(closeCommand);
+        remote.pressButton();  // Closes the book
+    }
+}
